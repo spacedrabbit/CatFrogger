@@ -241,13 +241,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
   }
   
   func spawnCarAtPosition(position: SCNVector3) {
-    /*
-     When you create a car, you need to make it a clone of the node you get from carScene. This is done by using .clone() like so:
-     
-     let myNode = otherNode.rootNode.childNodeWithName("Child Node Name", recursively: false)!.clone() as SCNNode
-     
-     When setting the position of the car node in Challenge A, you should use the position SCNVector3(x: 0.0, y: position.y, z: position.z). That will put the car in the middle of the road to start with so that it is visible to you when you build and run.
-     */
+    let moveDistance = levelData.gameLevelWidth()
     
     // Note: this will generate an exception if .clone() isn't added
     // Note: this isn't stated anywhere, but the "Car" identifier can be verified in the inspector pane with car.dae selected
@@ -255,7 +249,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
       let carNode: SCNNode = carScene!.rootNode.childNodeWithName("Car", recursively: false)?.clone()
     else { return }
     
-    carNode.position = SCNVector3(x: 0.0, y: position.y, z: position.z)
+    carNode.position = SCNVector3(x: position.x, y: position.y, z: position.z)
     
     let carMaterial = SCNMaterial()
     carMaterial.diffuse.contents = UIImage(named: "assets.scnassets/Textures/model_texture.tga")
