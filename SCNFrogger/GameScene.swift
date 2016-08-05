@@ -243,6 +243,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
   func spawnCarAtPosition(position: SCNVector3) {
     let moveDistance = levelData.gameLevelWidth()
     let moveDirection: Float = position.x > 0.0 ? -1.0 : 1.0
+    let rotationAngle: CGFloat = position.x > 0.0 ? 0.0 : CGFloat(M_PI)
     
     // Note: this will generate an exception if .clone() isn't added
     // Note: this isn't stated anywhere, but the "Car" identifier can be verified in the inspector pane with car.dae selected
@@ -260,8 +261,10 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     carNode.geometry?.firstMaterial = carMaterial
     // this seems to need some optimizing, refer to docs on geometry and material
     
-    let moveAction: SCNAction = SCNAction.moveBy(SCNVector3(moveDistance * moveDirection, 0.0, 0.0), duration: 1.0)
-    carNode.runAction(moveAction)
+    let moveAction: SCNAction = SCNAction.moveBy(SCNVector3(moveDistance * moveDirection, 0.0, 0.0), duration: 3.0)
+    let removalAction: SCNAction = SCNAction.removeFromParentNode()
+    let rotationAction: SCNAction = SCNAction.rotateByX(0.0, y: rotationAngle, z: 0.0, duration: 0.0)
+    carNode.runAction(SCNAction.sequence([rotationAction, moveAction, removalAction]))
     
     rootNode.addChildNode(carNode)
   }
