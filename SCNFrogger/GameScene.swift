@@ -250,15 +250,22 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
      */
     
     // Note: this will generate an exception if .clone() isn't added
-    if let carNode: SCNNode = carScene!.rootNode.childNodeWithName("Car", recursively: false)?.clone() {
-      carNode.position = SCNVector3(x: 0.0, y: position.y, z: position.z)
-      rootNode.addChildNode(carNode)
-    }
+    // Note: this isn't stated anywhere, but the "Car" identifier can be verified in the inspector pane with car.dae selected
+    guard
+      let carNode: SCNNode = carScene!.rootNode.childNodeWithName("Car", recursively: false)?.clone()
+    else { return }
     
-//    let carMaterial = SCNMaterial()
-//    carMaterial.diffuse.contents = UIImage(named: "assets.scnassets/Textures/model_texture.tga")
-//    carMaterial.locksAmbientWithDiffuse = false
-   
+    carNode.position = SCNVector3(x: 0.0, y: position.y, z: position.z)
+    
+    let carMaterial = SCNMaterial()
+    carMaterial.diffuse.contents = UIImage(named: "assets.scnassets/Textures/model_texture.tga")
+    // TODO: I need to check this tga out (Blender?), I have no idea how scenekit knows how to give each mesh the correct texture
+    carMaterial.locksAmbientWithDiffuse = false
+    
+    carNode.geometry?.firstMaterial = carMaterial
+    // this seems to need some optimizing, refer to docs on geometry and material
+    
+    rootNode.addChildNode(carNode)
   }
   
   
