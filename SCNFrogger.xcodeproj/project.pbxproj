@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		140CFC421D558ABE00785D5B /* CarNPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140CFC411D558ABE00785D5B /* CarNPC.swift */; };
 		3B8717B71A3A17B000F3C10D /* HandNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8717B61A3A17B000F3C10D /* HandNode.swift */; };
 		3B8717B91A3A1D8A00F3C10D /* LabelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8717B81A3A1D8A00F3C10D /* LabelNode.swift */; };
 		3B8717BB1A3A20E300F3C10D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B8717BA1A3A20E300F3C10D /* Constants.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		140CFC411D558ABE00785D5B /* CarNPC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CarNPC.swift; path = NPCs/CarNPC.swift; sourceTree = "<group>"; };
 		3B8717B61A3A17B000F3C10D /* HandNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandNode.swift; sourceTree = "<group>"; };
 		3B8717B81A3A1D8A00F3C10D /* LabelNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelNode.swift; sourceTree = "<group>"; };
 		3B8717BA1A3A20E300F3C10D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -96,6 +98,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		140CFC431D558AC500785D5B /* NPCs */ = {
+			isa = PBXGroup;
+			children = (
+				140CFC411D558ABE00785D5B /* CarNPC.swift */,
+			);
+			name = NPCs;
+			sourceTree = "<group>";
+		};
 		3BB3C6031A2DD00F003F7FA8 /* SKTUtils */ = {
 			isa = PBXGroup;
 			children = (
@@ -160,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				3BB3C5FB1A2DCF0A003F7FA8 /* GameScene.swift */,
+				140CFC431D558AC500785D5B /* NPCs */,
 				3BB3C5FF1A2DCFB8003F7FA8 /* assets.scnassets */,
 				3BB3C6261A2DD26B003F7FA8 /* Helpers */,
 				3BB3C6011A2DCFDF003F7FA8 /* Images.xcassets */,
@@ -307,6 +318,7 @@
 				3BB3C6191A2DD00F003F7FA8 /* SKTEffects.swift in Sources */,
 				3BB3C6151A2DD00F003F7FA8 /* SKAction+SpecialEffects.swift in Sources */,
 				3BB3C6121A2DD00F003F7FA8 /* CGVector+Extensions.swift in Sources */,
+				140CFC421D558ABE00785D5B /* CarNPC.swift in Sources */,
 				3BB3C6141A2DD00F003F7FA8 /* SKAction+Extensions.swift in Sources */,
 				3BB3C6161A2DD00F003F7FA8 /* SKColor+Extensions.swift in Sources */,
 				3B8717B71A3A17B000F3C10D /* HandNode.swift in Sources */,

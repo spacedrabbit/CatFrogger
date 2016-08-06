@@ -27,7 +27,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
   var player: SCNNode!
   var playerChildNode: SCNNode!
   let playerScene = SCNScene(named: "assets.scnassets/Models/frog.dae")
-  let carScene = SCNScene(named: "assets.scnassets/Models/car.dae")
+  let carScene = SCNScene(named: "assets.scnassets/Models/car.dae") // TODO
   var playerGridCol = 7
   var playerGridRow = 6
   
