@@ -56,7 +56,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     player = SCNNode()
     player.name = "Player"
     player.position = levelData.coordinatesForGridPosition(playerGridCol, row: playerGridRow)
-    player.position.y = 0.2
+    player.position.y = -0.1
     
     let playerMaterial = SCNMaterial()
     playerMaterial.diffuse.contents = UIImage(named: "assets.scnassets/Textures/model_texture.tga")
@@ -64,12 +64,13 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     
     playerChildNode = playerScene!.rootNode.childNodeWithName("Frog", recursively: false)!
     playerChildNode.geometry!.firstMaterial = playerMaterial
-    playerChildNode.position = SCNVector3(x: 0.0, y: 0.0, z: 0.075)
+    playerChildNode.position = SCNVector3(x: 0.0, y: 0.15, z: 0.075)
     
-    let playerPhysicsBodyShape = SCNPhysicsShape(geometry: SCNBox(width: 0.08, height: 0.08, length: 0.0, chamferRadius: 0.0), options: nil)
+    let playerPhysicsBodyShape = SCNPhysicsShape(geometry: SCNBox(width: 0.08, height: 0.08, length: 0.08, chamferRadius: 0.0), options: nil)
     playerChildNode.physicsBody = SCNPhysicsBody(type: .Kinematic, shape: playerPhysicsBodyShape)
     playerChildNode.physicsBody!.categoryBitMask = PhysicsCategory.Player
     playerChildNode.physicsBody!.collisionBitMask = PhysicsCategory.Car
+    playerChildNode.physicsBody!.contactTestBitMask = PhysicsCategory.Player
     
     player.addChildNode(playerChildNode)
     rootNode.addChildNode(player)
@@ -241,9 +242,22 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
   }
   
   func spawnCarAtPosition(position: SCNVector3) {
+    // bored, so i made the code a little more explicit in its intent. would be of more use if the Car node is refactored to its own class
+    enum carDirection {
+      case LeftToRight, RightToLeft
+    }
+    
+    var direction: carDirection
+    switch position.x {
+    case let x where x > 0.0 :
+      direction = .RightToLeft
+    default:
+      direction = .LeftToRight
+    }
+    
     let moveDistance = levelData.gameLevelWidth()
-    let moveDirection: Float = position.x > 0.0 ? -1.0 : 1.0
-    let rotationAngle: CGFloat = position.x > 0.0 ? 0.0 : CGFloat(M_PI)
+    let moveDirection: Float = direction == .RightToLeft ? -1.0 : 1.0
+    let rotationAngle: CGFloat = direction == .RightToLeft ? 0.0 : CGFloat(M_PI)
     
     // Note: this will generate an exception if .clone() isn't added
     // Note: this isn't stated anywhere, but the "Car" identifier can be verified in the inspector pane with car.dae selected
@@ -253,13 +267,22 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
     
     carNode.position = SCNVector3(x: position.x, y: position.y, z: position.z)
     
+    // TODO: I need to check this tga out (Blender?), I have no idea how scenekit knows how to give each mesh the correct texture
     let carMaterial = SCNMaterial()
     carMaterial.diffuse.contents = UIImage(named: "assets.scnassets/Textures/model_texture.tga")
-    // TODO: I need to check this tga out (Blender?), I have no idea how scenekit knows how to give each mesh the correct texture
     carMaterial.locksAmbientWithDiffuse = false
-    
     carNode.geometry?.firstMaterial = carMaterial
     // this seems to need some optimizing, refer to docs on geometry and material
+    
+    let carPhysicsBody: SCNPhysicsBody = SCNPhysicsBody(type: .Kinematic, shape: SCNPhysicsShape(geometry: SCNBox(width: 0.30, height: 0.20, length: 0.16, chamferRadius: 0.0), options: nil))
+    carPhysicsBody.collisionBitMask = PhysicsCategory.Player
+    carPhysicsBody.categoryBitMask = PhysicsCategory.Car
+    
+    // contactBitMask is the only property mentioned in the documentation to alert the collision delegate of the scene
+    // not sure if this is a recent change but the tutorial makes no mention of it's use. so perhaps the physics type i used for
+    // the car should have been different, but collision works well under these settings
+    carPhysicsBody.contactTestBitMask = PhysicsCategory.Player
+    carNode.physicsBody = carPhysicsBody
     
     let moveAction: SCNAction = SCNAction.moveBy(SCNVector3(moveDistance * moveDirection, 0.0, 0.0), duration: 3.0)
     let removalAction: SCNAction = SCNAction.removeFromParentNode()
@@ -326,7 +349,7 @@ class GameScene : SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate,
       playerGridCol = gridColumnAndRowAfterMove.newGridColumn
       playerGridRow = gridColumnAndRowAfterMove.newGridRow
       var newPlayerPosition = levelData.coordinatesForGridPosition(playerGridCol, row: playerGridRow)
-      newPlayerPosition.y = 0.2
+      newPlayerPosition.y = -0.1
       
       // 4 - Move player
       let moveAction = SCNAction.moveTo(newPlayerPosition, duration: 0.2)
